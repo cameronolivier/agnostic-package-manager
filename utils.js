@@ -1,6 +1,6 @@
 const {colors, managers, commandsMap} = require('./constants');
 
-const { exec } = require("node:child_process");
+const { spawn } = require('node:child_process')
 const fs = require('node:fs');
 
 // ref: https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
@@ -9,7 +9,7 @@ const logger = (msgs) => {
     console.log(`${colors.reset}${message}`);
 }
 const logFoundManager = (pm) => {
-    logger([[colors.cyan, 'project found:'], [colors.brightYellow, pm]]);
+    logger([[colors.cyan, 'package manager: '], [colors.brightYellow, pm]]);
 }
 
 const logError = (msg) => {
@@ -27,7 +27,7 @@ const itemWithDescription = (num, content) => {
     return [[colors.brightCyan, `${num}: `], [colors.yellow, content]]
 }
 
-const info = () => {
+const getInfoContent = () => {
     logInfo('APM has the following API:')
     logger(itemWithDescription('add', 'adds dependencies. Uses "install" command for npm.'))
     logger(itemWithDescription('install', 'installs packages'))
@@ -54,33 +54,45 @@ const getManager = () => {
 }
 
 const handleNpx = (manager, args) => {
-    if (!(manager === 'npm' && args.contains('dlx'))) {
+    if (!(manager === 'npm' && args.includes('dlx'))) {
         return [manager, args]
     }
 
     return ['npx', args.slice(1)]
 }
 
-const execPackageManagerCommand = (manager, command, args) => {
-    const execCommand = [manager, command, args].join(' ')
-    exec(execCommand, () => {
-        logInfo('Command completed successfully.')
-    })
+const execCommand = (manager, command, args) => {
+    console.log({manager, command, args})
+    const commandToExecute = [manager, command, args].join(' ').replace('  ', ' ').trim()
+    logInfo(`Running: ${commandToExecute}`)
+    spawn(manager, [command, args], {stdio: "inherit"})
 }
 
-const run = (givenArgs) => {
-    if (givenArgs.length === 0) {
+const getCommand = (manager, args) => {
+    const cmd = commandsMap[args[0]] || false
+
+    if (!cmd) {
+        return ['', args]
+    }
+
+    return [cmd[manager], args.slice(1)]
+}
+
+const run = (args) => {
+    console.log({args})
+
+    if (args.length === 0) {
         logInfo('Run "apm --help" for available commands.')
         return
     }
 
-    if (givenArgs[0] === '--help') {
-        info()
+    if (args[0] === '--help') {
+        getInfoContent()
         return
     }
-    const [manager, args] = handleNpx(getManager(), givenArgs)
-    const cmd = commandsMap[args[0]] ?? ''
-    execPackageManagerCommand(manager, cmd, (cmd === '' ? args: args.slice(1)))
+    const [manager, argsAfterHandleNpx] = handleNpx(getManager(), args)
+    const [cmd, argsAfterGetCommand] = getCommand(manager, argsAfterHandleNpx)
+    execCommand(manager, cmd, argsAfterGetCommand)
 }
 
 module.exports = {
