@@ -1,0 +1,23 @@
+{
+  "name": "agnostic_package_manager",
+  "version": "1.0.0",
+  "description": "a small cli tool to wrap the current project's package manager (yarn, npm, pnpm)",
+  "main": "cli.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "n"
+  },
+  "keywords": [
+    "npm",
+    "yarn",
+    "pnpm"
+  ],
+  "bin": {
+    "apm": "./cli.js"
+  },
+  "author": "cameronolivier@gmail.com",
+  "license": "ISC"
+}
