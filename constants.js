@@ -4,6 +4,7 @@ const managers = {
     yarn: 'yarn',
 }
 
+// ref: https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
 const colors = {
     reset: '\x1b[0m',
     black: "\x1b[30m",

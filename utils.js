@@ -1,26 +1,11 @@
 const {colors, managers, commandsMap} = require('./constants');
+const {logger, logInfo, logError} = require("./logger");
 
 const { spawn } = require('node:child_process')
 const fs = require('node:fs');
 
-// ref: https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
-const logger = (msgs) => {
-    const message = msgs.map(msg => msg.concat([colors.reset]).join('')).join('')
-    console.log(`${colors.reset}${message}`);
-}
 const logFoundManager = (pm) => {
     logger([[colors.cyan, 'package manager: '], [colors.brightYellow, pm]]);
-}
-
-const logError = (msg) => {
-    logger([[colors.red, msg]])
-}
-
-const logInfo = (msg) => {
-    logger([[colors.cyan, msg]])
-}
-const logWarn = (msg) => {
-    logger([[colors.yellow, msg]])
 }
 
 const itemWithDescription = (num, content) => {
@@ -50,7 +35,7 @@ const getManager = () => {
         logFoundManager(managers.yarn)
         return managers.yarn
     }
-    logError('No supported package manager found in project')
+    return false
 }
 
 const handleNpx = (manager, args) => {
@@ -62,10 +47,9 @@ const handleNpx = (manager, args) => {
 }
 
 const execCommand = (manager, command, args) => {
-    console.log({manager, command, args})
     const commandToExecute = [manager, command, args].join(' ').replace('  ', ' ').trim()
     logInfo(`Running: ${commandToExecute}`)
-    spawn(manager, [command, args], {stdio: "inherit"})
+    spawn(manager, [command, args ?? ''], {stdio: "inherit"})
 }
 
 const getCommand = (manager, args) => {
@@ -79,8 +63,6 @@ const getCommand = (manager, args) => {
 }
 
 const run = (args) => {
-    console.log({args})
-
     if (args.length === 0) {
         logInfo('Run "apm --help" for available commands.')
         return
@@ -90,7 +72,15 @@ const run = (args) => {
         getInfoContent()
         return
     }
-    const [manager, argsAfterHandleNpx] = handleNpx(getManager(), args)
+
+    const man = getManager()
+
+    if (!man) {
+        logError('No supported package manager found in project')
+        return
+    }
+
+    const [manager, argsAfterHandleNpx] = handleNpx(man, args)
     const [cmd, argsAfterGetCommand] = getCommand(manager, argsAfterHandleNpx)
     execCommand(manager, cmd, argsAfterGetCommand)
 }
