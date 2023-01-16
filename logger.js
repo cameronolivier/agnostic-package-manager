@@ -11,6 +11,11 @@ const logError = (msg) => {
 const logInfo = (msg) => {
     logger([[colors.cyan, msg]])
 }
+
+const logSuccess = (msg) => {
+    logger([[colors.green, msg]])
+}
+
 const logWarn = (msg) => {
     logger([[colors.yellow, msg]])
 }
@@ -19,5 +24,6 @@ module.exports = {
     logger,
     logError,
     logInfo,
+    logSuccess,
     logWarn
 }

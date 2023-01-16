@@ -38,6 +38,11 @@ const commandsMap = {
         yarn: 'install',
         pnpm: 'install',
     },
+    run: {
+        npm: 'run',
+        yarn: 'run',
+        pnpm: 'run',
+    },
     uninstall: {
         npm: 'uninstall',
         yarn: 'remove',
