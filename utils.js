@@ -13,6 +13,7 @@ const itemWithDescription = (num, content) => {
 }
 
 const getInfoContent = () => {
+    logInfo('APM currently works with Npm, Yarn and Pnpm.')
     logInfo('APM has the following API:')
     logger(itemWithDescription('add', 'adds dependencies. Uses "install" command for npm.'))
     logger(itemWithDescription('install', 'installs packages'))
