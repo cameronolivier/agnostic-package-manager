@@ -47,10 +47,18 @@ const handleNpx = (manager, args) => {
     return ['npx', args.slice(1)]
 }
 
+const removeEmpty = (arr) =>
+    arr.filter(item => !!item)
+
+const removeWhiteSpace = (str) => str.replace(/\s/g, ' ').trim()
+
+
 const execCommand = (manager, command, args) => {
-    const commandToExecute = [manager, command, args].join(' ').replace('  ', ' ').trim()
+    const arguments = removeEmpty([command, ...(args ?? [])])
+
+    const commandToExecute = removeWhiteSpace([manager, arguments.join(' ')].join(' '))
     logInfo(`Running: ${commandToExecute}`)
-    spawn(manager, [command, args ?? ''], {stdio: "inherit"})
+    spawn(manager, arguments, {stdio: "inherit"})
 }
 
 const getCommand = (manager, args) => {
@@ -83,6 +91,7 @@ const run = (args) => {
 
     const [manager, argsAfterHandleNpx] = handleNpx(man, args)
     const [cmd, argsAfterGetCommand] = getCommand(manager, argsAfterHandleNpx)
+    console.log({cmd, argsAfterGetCommand})
     execCommand(manager, cmd, argsAfterGetCommand)
 }
 

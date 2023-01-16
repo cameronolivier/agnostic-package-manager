@@ -1,6 +1,6 @@
 {
   "name": "agnostic-package-manager",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "a small cli tool to wrap the current project's package manager (yarn, npm, pnpm)",
   "main": "cli.js",
   "scripts": {
