@@ -91,7 +91,6 @@ const run = (args) => {
 
     const [manager, argsAfterHandleNpx] = handleNpx(man, args)
     const [cmd, argsAfterGetCommand] = getCommand(manager, argsAfterHandleNpx)
-    console.log({cmd, argsAfterGetCommand})
     execCommand(manager, cmd, argsAfterGetCommand)
 }
 
