@@ -27,22 +27,32 @@ const colors = {
 }
 
 
+const add = {
+    npm: 'install',
+    yarn: 'add',
+    pnpm: 'add',
+}
+
+const install = {
+    npm: 'install',
+    yarn: 'install',
+    pnpm: 'install',
+}
+
+const run = {
+    npm: 'run',
+    yarn: 'run',
+    pnpm: 'run',
+}
+
+
 const commandsMap = {
-    add: {
-        npm: 'install',
-        yarn: 'add',
-        pnpm: 'add',
-    },
-    install: {
-        npm: 'install',
-        yarn: 'install',
-        pnpm: 'install',
-    },
-    run: {
-        npm: 'run',
-        yarn: 'run',
-        pnpm: 'run',
-    },
+    add,
+    a: add,
+    install,
+    i: install,
+    run,
+    r: run,
     uninstall: {
         npm: 'uninstall',
         yarn: 'remove',

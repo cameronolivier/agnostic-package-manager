@@ -68,7 +68,7 @@ const getCommand = (manager, args) => {
 
 const logCommand = (manager, arguments) => {
     const commandToExecute = removeWhiteSpace([manager, arguments.join(' ')].join(' '))
-    logStatus('Running', commandToExecute)
+    logStatus('running', commandToExecute)
 }
 
 const run = (args) => {
