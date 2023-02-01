@@ -45,6 +45,18 @@ const run = {
     pnpm: 'run',
 }
 
+const update = {
+    npm: 'update',
+    yarn: 'upgrade',
+    pnpm: 'update',
+}
+
+const dlx = {
+    npm: '',
+    yarn: 'dlx',
+    pnpm: 'dlx',
+}
+
 
 const commandsMap = {
     add,
@@ -58,16 +70,10 @@ const commandsMap = {
         yarn: 'remove',
         pnpm: 'uninstall',
     },
-    update: {
-        npm: 'update',
-        yarn: 'upgrade',
-        pnpm: 'update',
-    },
-    dlx: {
-        npm: '',
-        yarn: 'dlx',
-        pnpm: 'dlx',
-    }
+    update,
+    u: update,
+    dlx,
+    x: dlx,
 }
 
 module.exports = {
