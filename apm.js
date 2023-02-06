@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-const fs = require('node:fs');
 const {run} = require('./utils');
 const [,, ...args] = process.argv
 

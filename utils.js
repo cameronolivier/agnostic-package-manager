@@ -1,5 +1,5 @@
 const {colors, managers, commandsMap} = require('./constants');
-const {logger, logInfo, logError, logSuccess} = require("./logger");
+const {logger, logInfo, logError} = require("./logger");
 
 const { spawn } = require('node:child_process')
 const fs = require('node:fs');
@@ -71,21 +71,54 @@ const logCommand = (manager, arguments) => {
     logStatus('running', commandToExecute)
 }
 
-const run = (args) => {
+const init = (args) => {
     if (args.length === 0) {
         logInfo('Run "apm --help" for available commands.')
-        return
+        return false
     }
 
     if (args[0] === '--help') {
         getInfoContent()
-        return
+        return false
     }
 
     const pm = getManager()
 
     if (!pm) {
         logError('No supported package manager found in project')
+        return false
+    }
+
+    return pm
+}
+
+const execAndLog = (pm, args) => {
+    logCommand(pm, args)
+    execCommand(pm, args)
+}
+
+const runDlx = (args) => {
+    logInfo('running APX')
+    const pm = init(args)
+
+    if (!pm) {
+        return
+    }
+
+    logStatus('package manager', pm)
+
+    if (pm === 'npm') {
+        execAndLog('npx', args)
+        return
+    }
+
+    execAndLog(pm, ['dlx', ...args])
+}
+
+const run = (args) => {
+    const pm = init(args)
+
+    if (!pm) {
         return
     }
 
@@ -94,10 +127,10 @@ const run = (args) => {
     const [pmExec, argsAfterHandleNpx] = handleNpx(pm, args)
     const [cmd, argsAfterGetCommand] = getCommand(pmExec, argsAfterHandleNpx)
     const arguments = removeEmpty([cmd, ...(argsAfterGetCommand ?? [])])
-    logCommand(pmExec, arguments)
-    execCommand(pmExec, arguments)
+    execAndLog(pmExec, arguments)
 }
 
 module.exports = {
-    run
+    run,
+    runDlx
 }
