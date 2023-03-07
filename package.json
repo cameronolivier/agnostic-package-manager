@@ -4,7 +4,7 @@
   "description": "a small cli tool to wrap the current project's package manager (yarn, npm, pnpm)",
   "main": "apm.js",
   "scripts": {
-    "init": "chmod +x apm.js && chmod +x apx.js && npm link"
+    "init": "chmod +x apm.js && chmod +x apx.js && chmod +x apr.js && npm link"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   ],
   "bin": {
     "apm": "apm.js",
+    "apr": "apr.js",
     "apx": "apx.js"
   },
   "author": "cameronolivier@gmail.com",

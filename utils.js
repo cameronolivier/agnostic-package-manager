@@ -115,6 +115,21 @@ const runDlx = (args) => {
     execAndLog(pm, ['dlx', ...args])
 }
 
+const runRun = (args) => {
+    logInfo('running APR')
+    const pm = init(args)
+
+    if (!pm) {
+        return
+    }
+
+    logStatus('package manager', pm)
+
+    const [cmd, argsAfterGetCommand] = getCommand(pm, ['run', ...args])
+    const arguments = removeEmpty([cmd, ...(argsAfterGetCommand ?? [])])
+    execAndLog(pm, arguments)
+}
+
 const run = (args) => {
     const pm = init(args)
 
@@ -132,5 +147,6 @@ const run = (args) => {
 
 module.exports = {
     run,
+    runRun,
     runDlx
 }
