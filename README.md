@@ -30,3 +30,10 @@ In `apm`, run:
 apm add react
 ```
 and it'll see what package manager you're running in your project and execute the correct command. 
+
+## Aliases:
+### APR: Agnostic Package Runner
+Running `apr <command>` is the same as running `apm run <command>`
+
+### APX: Agnostic Package Executor
+Running `apx <command>` is the same as running `apm dlx <command>`

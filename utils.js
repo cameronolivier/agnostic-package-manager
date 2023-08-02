@@ -46,6 +46,23 @@ const handleNpx = (manager, args) => {
     return ['npx', args.slice(1)]
 }
 
+const arrayReplaceIfExists = (arr, find, replace) => {
+    const index = arr.indexOf(find)
+    if (index === -1) {
+        return arr;
+    }
+
+    return ([...arr.slice(0, index), replace, ...arr.slice(index + 1)])
+}
+
+const handleInstall = (manager, args) => {
+    if (!(manager === 'npm' && args.includes('install')  && args.includes('--dev'))) {
+        return [manager, arrayReplaceIfExists(args, '--dev', commandsMap.installDev[manager])]
+    }
+
+    return [manager, args]
+}
+
 const removeEmpty = (arr) =>
     arr.filter(item => !!item)
 
@@ -98,7 +115,7 @@ const execAndLog = (pm, args) => {
 }
 
 const runDlx = (args) => {
-    logInfo('running APX')
+    logInfo('running Agnostic Package Executor (APX)')
     const pm = init(args)
 
     if (!pm) {
@@ -116,7 +133,7 @@ const runDlx = (args) => {
 }
 
 const runRun = (args) => {
-    logInfo('running APR')
+    logInfo('running Agnostic Package Runner (APR)')
     const pm = init(args)
 
     if (!pm) {

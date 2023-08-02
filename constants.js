@@ -57,11 +57,18 @@ const dlx = {
     pnpm: 'dlx',
 }
 
+const installDev = {
+    npm: '--save-dev',
+    yarn: '--dev',
+    pnpm: '--dev',
+}
+
 
 const commandsMap = {
     add,
     a: add,
     install,
+    installDev,
     i: install,
     run,
     r: run,
